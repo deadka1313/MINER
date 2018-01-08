@@ -1,13 +1,26 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class JavaSweeper extends JFrame {
+    private JPanel panel;
+    private final int COLS = 15;
+    private final int ROWS = 1;
+    private final int IMAGE_SIZE = 50;
+
     public static void main(String[] args) {
         new JavaSweeper();
-
     }
 
     private JavaSweeper() {
+        initPanel();
         initFrame();
+    }
+
+    private void initPanel() {
+        panel = new JPanel();
+        panel.setPreferredSize(new Dimension(
+                COLS * IMAGE_SIZE, ROWS * IMAGE_SIZE));
+        add (panel);
     }
 
     private void initFrame() {
