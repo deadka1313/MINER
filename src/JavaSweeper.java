@@ -5,6 +5,8 @@ import sweeper.Ranges;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class JavaSweeper extends JFrame {
     private Game game;
@@ -12,6 +14,7 @@ public class JavaSweeper extends JFrame {
     private JPanel panel;
     private final int COLS = 9;
     private final int ROWS = 9;
+    private final int BOMBS = 10;
     private final int IMAGE_SIZE = 50;
 
     public static void main(String[] args) {
@@ -19,7 +22,7 @@ public class JavaSweeper extends JFrame {
     }
 
     private JavaSweeper() {
-        game = new Game(COLS, ROWS);
+        game = new Game(COLS, ROWS, BOMBS);
         game.start();
         setImages();
         initPanel();
@@ -38,6 +41,18 @@ public class JavaSweeper extends JFrame {
                 }
             }
         };
+
+        panel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int x = e.getX() / IMAGE_SIZE;
+                int y = e.getY() / IMAGE_SIZE;
+                Coord coord = new Coord(x, y);
+                if(e.getButton() == MouseEvent.BUTTON1)
+                    game.pressLeftButton(coord);
+                panel.repaint();
+            }
+        });
         panel.setPreferredSize(new Dimension(
                 Ranges.getSize().x * IMAGE_SIZE,
                 Ranges.getSize().y * IMAGE_SIZE));
@@ -45,13 +60,13 @@ public class JavaSweeper extends JFrame {
     }
 
     private void initFrame() {
-        pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("MINER");
         setLocationRelativeTo(null);
         setResizable(false);
         setVisible(true);
         setIconImage(getImage("icon"));
+        pack();
     }
 
     private void setImages() {
